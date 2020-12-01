@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Person Form</h1>
+    <h1>Rol Form</h1>
         <hr />
         <br />
         <alert :message="message" v-if="showMessage"></alert>
@@ -17,35 +17,15 @@
       <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Nombre">
         <b-form-input id="input-sm" size="sm" placeholder="Enter Nombre" type="text" v-model="d.nombre" required></b-form-input>
       </b-form-group>
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Apellido Paterno">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter Apellido Paterno" type="text" v-model="d.paterno" required></b-form-input>
-      </b-form-group>
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Apellido Materno">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter Apellido Materno" type="text" v-model="d.materno" required></b-form-input>
+
+      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Código">
+        <b-form-input id="input-sm" size="sm" placeholder="Enter Código" type="number" v-model="d.codigo" required></b-form-input>
       </b-form-group>
 
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Usuario">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter Usuario" type="text" v-model="d.usuario" required></b-form-input>
+      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Estado">
+        <b-form-input id="input-sm" size="sm" placeholder="Enter Estado" type="number" v-model="d.estado"></b-form-input>
       </b-form-group>
 
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="E-mail">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter E-mail" type="email" v-model="d.email" required></b-form-input>
-      </b-form-group>
-
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Password">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter Password" type="password" v-model="d.password" required></b-form-input>
-      </b-form-group>
-
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Edad">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter Edad" type="number" v-model="d.edad" required></b-form-input>
-      </b-form-group>
-
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="Fecha de Nacimiento">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter Fecha de Nacimiento" type="date" v-model="d.fechanacimiento" required></b-form-input>
-      </b-form-group>
-      <b-form-group label-cols="4" label-cols-lg="3" label-size="sm" label="DNI">
-        <b-form-input id="input-sm" size="sm" placeholder="Enter DNI" type="number" v-model="d.dni"></b-form-input>
-      </b-form-group>
       <b-button-group>
         <b-button type="submit" variant="primary">Submit</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
@@ -81,7 +61,7 @@ axios.interceptors.request.use(
   }
 );
 export default {
-  name: "PersonForm",
+  name: "RolForm",
   data: function () {
     return {
       list: [],
@@ -90,14 +70,9 @@ export default {
       d: {
         ID: "",
         nombre: "",
-        paterno: "",
-        materno: "",
-        usuario: "",
-        email: "",
-        edad: "",
-        password: "",
-        fechanacimiento: "",
-        dni: "",
+        codigo: "",
+        estado: "",
+
       },
     };
   },
@@ -115,18 +90,18 @@ export default {
       });
     },
     back: function () {
-      this.$router.push("/persons");
+      this.$router.push("/rol");
     },
     create: function (payload) {
-      const path = "http://localhost:8080/v1/persons";
+      const path = "http://localhost:8080/v1/rol";
       axios
         .post(path, payload)
         .then(() => {
           console.log(payload);
-          this.message = "Person added!";
+          this.message = "Rol added!";
           this.showMessage = true;
           this.makeToast("Hecho", "Paciente creado", "success");
-          this.$router.push("/persons");
+          this.$router.push("/rol");
         })
         .catch((error) => {
           console.log(error);
@@ -135,27 +110,16 @@ export default {
     initForm: function () {
       //this.d.ID = '';
       this.d.nombre = "";
-      this.d.paterno = "";
-      this.d.materno = "";
-      this.d.usuario = "";
-      this.d.email = "";
-      this.d.password = "";
-      this.d.edad = "";
-      this.d.fechanacimiento = "";
-      this.d.dni = "";
+      this.d.codigo = "";
+      this.d.estado = "";
     },
     onSubmit: function (evt) {
       evt.preventDefault();
       const payload = {
         nombre: this.d.nombre,
-        paterno: this.d.paterno,
-        materno: this.d.materno,
-        usuario: this.d.usuario,
-        email: this.d.email,
-        password: this.d.password,
-        edad: this.d.edad,
-        fechanacimiento: this.d.fechanacimiento,
-        dni: this.d.dni,
+        codigo: this.d.codigo,
+        estado: this.d.estado,
+
       };
       if (this.d.ID > 0) {
         this.update(payload, this.d.ID);
@@ -170,7 +134,7 @@ export default {
       evt.target.reset();
     },
     getById: function (id) {
-      const path = "http://localhost:8080/v1/persons/" + id;
+      const path = "http://localhost:8080/v1/rol/" + id;
       console.log(path);
       axios
         .get(path)
@@ -183,15 +147,15 @@ export default {
         });
     },
     update: function (payload, id) {
-      const path = `http://localhost:8080/v1/persons/${id}`;
+      const path = `http://localhost:8080/v1/rol/${id}`;
       axios
         .put(path, payload)
         .then(() => {
           console.log(payload);
-          this.message = "Person added!";
+          this.message = "Rol added!";
           this.showMessage = true;
           this.makeToast("Hecho", "Paciente editado", "success");
-          this.$router.push("/persons");
+          this.$router.push("/rol");
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -231,10 +195,10 @@ a {
 
 .container {
   margin-top: 20px;
-  height: 670px;
+  height: 400px;
   width: 50%;
   background: rgb(43, 160, 154);
-  font-family: 'Times New Roman', Times, serif bold;;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
 }
 </style>

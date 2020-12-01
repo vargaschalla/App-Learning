@@ -2,12 +2,12 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-10">
-        <h1>Persons</h1>
+        <h1>Rol</h1>
         <hr />
         <br /><br />
         <alert :message="message" v-if="showMessage"></alert>
-        <button id="addperson" type="button" class="btn btn-success btn-sm" v-on:click="add()">
-          Add Person
+        <button id="addrol" type="button" class="btn btn-success btn-sm" v-on:click="add()">
+          Add Rol
         </button>
         <br /><br />
         <table class="table table-hover">
@@ -15,13 +15,8 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Nombre</th>
-              <th scope="col">Paterno</th>
-              <th scope="col">Materno</th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Email</th>
-              <th scope="col">Edad</th>
-              <th scope="col">Fecha Nacimiento</th>
-              <th scope="col">DNI</th>
+              <th scope="col">Código</th>
+              <th scope="col">Estado</th>
 
               <th></th>
             </tr>
@@ -30,13 +25,8 @@
             <tr v-for="(d, index) in list" :key="index">
               <td>{{ index+1  }}</td>
               <td>{{ d.nombre   }}</td>
-              <td>{{ d.paterno  }}</td>
-              <td>{{ d.materno  }}</td>
-              <td>{{ d.usuario  }}</td>
-              <td>{{ d.email    }}</td>
-              <td>{{ d.edad  }}</td>
-              <td>{{ d.fechanacimiento     }}</td>
-              <td>{{ d.dni  }}</td>
+              <td>{{ d.codigo  }}</td>
+              <td>{{ d.estado  }}</td>
               <td>
                 <div class="btn-group" role="group">
                   <button
@@ -68,7 +58,7 @@
 import client from "../api";
 import Alert from "./Alert.vue";
 export default {
-  name: "Person",
+  name: "Rol",
   data: function () {
     return {
       list: [],
@@ -81,14 +71,14 @@ export default {
   },
   methods: {
     edit: function (id) {
-      this.$router.push("/persons/form/" + id);
+      this.$router.push("/rol/form/" + id);
     },
     add: function () {
-      this.$router.push("/persons/form");
+      this.$router.push("/rol/form");
     },
     getList: function () {
       client
-        .get("/v1/persons")
+        .get("/v1/rol")
         .then((res) => {
           this.list = res.data.r;
         })
@@ -104,7 +94,7 @@ export default {
     },
     delete: function (id) {
       client
-        .delete(`/v1/persons/${id}`)
+        .delete(`/v1/rol/${id}`)
         .then(() => {
           this.getList();
           this.message = "Book removed!";
@@ -141,14 +131,8 @@ a {
 .hello {
   color: #42b983;
 }
-#addperson{
-  margin-right: 810px;
+#addrol{
+  margin-right: 800px;
   width: 20%;
-}
-table td{
-  border:solid 3px teal;
-}
-table th{
-  border:solid 3px teal;
 }
 </style>
